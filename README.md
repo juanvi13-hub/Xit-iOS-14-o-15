@@ -29,7 +29,6 @@ body {
   z-index: 9999;
 }
 
-/* HEADER */
 #header {
   padding: 10px;
   background: rgba(255,255,255,0.15);
@@ -40,7 +39,7 @@ body {
   border-top-right-radius: 12px;
 }
 
-/* BOTONES RAINBOW */
+/* BOTONES */
 button {
   width: 90%;
   margin: 8px 10px;
@@ -55,22 +54,94 @@ button {
   animation: rainbow 5s ease infinite;
 }
 
-button:hover {
-  transform: scale(1.03);
-}
-
 @keyframes rainbow {
   0% {background-position:0% 50%}
   50% {background-position:100% 50%}
   100% {background-position:0% 50%}
 }
 
-/* mensaje */
 #msg {
   text-align: center;
   font-size: 12px;
   padding: 5px;
   color: #00ffcc;
+}
+
+/* STICKMAN */
+.stickman {
+  position: fixed;
+  bottom: 20px;
+  left: 60px;
+  width: 60px;
+  height: 120px;
+}
+
+.head {
+  width: 20px;
+  height: 20px;
+  border: 3px solid white;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.body {
+  width: 3px;
+  height: 40px;
+  background: white;
+  margin: 0 auto;
+}
+
+.arm {
+  width: 25px;
+  height: 3px;
+  background: white;
+  position: absolute;
+  top: 35px;
+}
+
+.arm.left { left: 0; transform: rotate(-30deg); }
+.arm.right { right: 0; transform: rotate(30deg); }
+
+.leg {
+  width: 25px;
+  height: 3px;
+  background: white;
+  position: absolute;
+  top: 75px;
+}
+
+.leg.left { left: 5px; transform: rotate(40deg); }
+.leg.right { right: 5px; transform: rotate(-40deg); }
+
+/* 🔴 PUNTO ROJO */
+.dot {
+  position: fixed;
+  width: 18px;
+  height: 18px;
+  background: red;
+  border-radius: 50%;
+  box-shadow: 0 0 15px red;
+  display: none;
+  z-index: 99999;
+}
+
+/* OPCIONES */
+.stick-options {
+  position: fixed;
+  bottom: 30px;
+  left: 140px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.opt {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -88,20 +159,41 @@ button:hover {
   <div id="msg"></div>
 </div>
 
+<!-- STICKMAN -->
+<div class="stickman">
+  <div class="head"></div>
+  <div class="body"></div>
+  <div class="arm left"></div>
+  <div class="arm right"></div>
+  <div class="leg left"></div>
+  <div class="leg right"></div>
+</div>
+
+<!-- OPCIONES -->
+<div class="stick-options">
+  <div class="opt" onclick="selectPart('head')">Cabeza activada</div>
+  <div class="opt" onclick="selectPart('neck')">Cuello activado</div>
+  <div class="opt" onclick="selectPart('chest')">Pecho activado</div>
+</div>
+
+<!-- PUNTO ROJO -->
+<div id="dot" class="dot"></div>
+
 <script>
 let panel = document.getElementById("panel");
 let header = document.getElementById("header");
 let msg = document.getElementById("msg");
+let dot = document.getElementById("dot");
 
 let isDragging = false;
 let offsetX, offsetY;
 
 /* VOZ */
 function speak(text){
-  let msg = new SpeechSynthesisUtterance(text);
-  msg.lang = "es-ES";
-  msg.rate = 1;
-  speechSynthesis.speak(msg);
+  let speech = new SpeechSynthesisUtterance(text);
+  speech.lang = "es-ES";
+  speech.rate = 1;
+  speechSynthesis.speak(speech);
 }
 
 /* DRAG */
@@ -122,47 +214,34 @@ document.addEventListener("mouseup", () => {
   isDragging = false;
 });
 
-/* contador */
-let activadas = 0;
+/* BOTONES PANEL */
+function openFF(){ speak("opción activada"); }
+function brightness(){ speak("opción activada"); document.body.style.filter="brightness(200%)"; }
+function gaming(){ speak("opción activada"); document.body.style.filter="contrast(130%) saturate(150%)"; }
+function safeMode(){ speak("opción activada"); document.body.style.filter="none"; }
 
-function checkDone(name) {
-  activadas++;
+/* OPCIONES STICKMAN */
+function selectPart(part){
 
-  speak(name + " activada");
-  msg.innerHTML = "✅ " + name + " activada";
+  speak(part + " activado");
+  msg.innerHTML = part + " activado";
 
-  if (activadas >= 4) {
-    speak("opción activada");
+  dot.style.display = "block";
+
+  if(part === "head"){
+    dot.style.top = "85px";
+    dot.style.left = "75px";
   }
-}
 
-/* BOTONES */
-function openFF() {
-  speak("abriendo free fire");
+  if(part === "neck"){
+    dot.style.top = "110px";
+    dot.style.left = "75px";
+  }
 
-  window.open("https://ff.garena.com", "_blank");
-
-  setTimeout(() => {
-    window.location.href =
-      "intent://com.dts.freefireth#Intent;package=com.dts.freefireth;end";
-  }, 1500);
-
-  checkDone("Open Free Fire");
-}
-
-function brightness() {
-  document.body.style.filter = "brightness(200%)";
-  checkDone("Brillo máximo");
-}
-
-function gaming() {
-  document.body.style.filter = "contrast(130%) saturate(150%)";
-  checkDone("Modo gaming");
-}
-
-function safeMode() {
-  document.body.style.filter = "none";
-  checkDone("Modo seguro");
+  if(part === "chest"){
+    dot.style.top = "135px";
+    dot.style.left = "75px";
+  }
 }
 </script>
 
