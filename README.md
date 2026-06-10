@@ -1,6 +1,5 @@
 # Xit-iOS-14-o-15
-Xit para iPhone 14 /15
-<!DOCTYPE html>
+Xit para iPhone 14 /15<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -16,7 +15,7 @@ body {
 }
 
 /* =========================
-   📌 PANEL PRINCIPAL
+   📌 PANEL PRINCIPAL (TU ORIGINAL)
 ========================= */
 #panel {
   width: 240px;
@@ -25,25 +24,24 @@ body {
   left: 20px;
   background: rgba(0,0,0,0.65);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.2);
   border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2);
   color: white;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  z-index: 9999;
 }
 
 #header {
   padding: 10px;
-  background: rgba(255,255,255,0.15);
-  cursor: grab;
-  font-weight: bold;
   text-align: center;
+  font-weight: bold;
+  cursor: grab;
+  background: rgba(255,255,255,0.15);
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
 
-/* 🌈 BOTONES PRINCIPALES */
-button {
+/* 🌈 BOTONES PANEL */
+#panel button {
   width: 90%;
   margin: 8px 10px;
   padding: 8px;
@@ -65,13 +63,13 @@ button {
 }
 
 /* =========================
-   👉 PANEL PEQUEÑO ARRIBA DERECHA
+   📦 MINI PANEL (ARRIBA DERECHA)
 ========================= */
 #miniPanel {
   position: fixed;
   top: 10px;
   right: 10px;
-  width: 140px;
+  width: 130px;
   background: rgba(0,0,0,0.6);
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.2);
@@ -83,7 +81,7 @@ button {
 
 #miniPanel button {
   width: 90%;
-  margin: 4px 0;
+  margin: 3px 0;
   padding: 4px;
   font-size: 9px;
   border-radius: 6px;
@@ -93,7 +91,7 @@ button {
 }
 
 /* =========================
-   🧍 STICKMAN
+   🧍 STICKMAN DERECHA
 ========================= */
 #rightSide {
   position: absolute;
@@ -159,21 +157,22 @@ button {
 <div id="panel">
   <div id="header">👹xit iOS 14💀</div>
 
-  <button onclick="say('Cabeza')">Cabeza</button>
-  <button onclick="say('Cuello')">Cuello</button>
-  <button onclick="say('Pecho')">Pecho</button>
+  <button onclick="openFF()">Open Free Fire</button>
+  <button onclick="brightness()">Brillo Máximo</button>
+  <button onclick="gaming()">Modo Gaming</button>
+  <button onclick="safeMode()">Modo Seguro</button>
 </div>
 
-<!-- 👉 PANEL PEQUEÑO ARRIBA DERECHA -->
+<!-- 📦 MINI PANEL -->
 <div id="miniPanel">
-  MINI MENU
+  MINI PANEL
 
   <button onclick="say('Head')">Head</button>
   <button onclick="say('Neck')">Neck</button>
   <button onclick="say('Chest')">Chest</button>
 </div>
 
-<!-- 👉 STICKMAN -->
+<!-- 🧍 STICKMAN -->
 <div id="rightSide">
   <div id="stickman">
     <div class="head"></div>
@@ -189,10 +188,9 @@ button {
 let panel = document.getElementById("panel");
 let header = document.getElementById("header");
 
-let dragging = false;
-let ox, oy;
+/* DRAG PANEL */
+let dragging = false, ox, oy;
 
-/* DRAG PANEL PRINCIPAL */
 header.addEventListener("mousedown", (e) => {
   dragging = true;
   ox = e.clientX - panel.offsetLeft;
@@ -214,6 +212,27 @@ document.addEventListener("mouseup", () => {
 function say(text) {
   let msg = new SpeechSynthesisUtterance(text + " seleccionado");
   speechSynthesis.speak(msg);
+}
+
+/* FUNCIONES ORIGINALES */
+function openFF() {
+  window.open("https://ff.garena.com", "_blank");
+  setTimeout(() => {
+    window.location.href =
+      "intent://com.dts.freefireth#Intent;package=com.dts.freefireth;end";
+  }, 1500);
+}
+
+function brightness() {
+  document.body.style.filter = "brightness(200%)";
+}
+
+function gaming() {
+  document.body.style.filter = "contrast(130%) saturate(150%)";
+}
+
+function safeMode() {
+  document.body.style.filter = "none";
 }
 </script>
 
